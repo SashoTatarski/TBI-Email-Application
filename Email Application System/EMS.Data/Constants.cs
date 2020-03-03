@@ -16,7 +16,7 @@
 
 
         // Messages
-        public const string AppCreateSucc = "You have successfully created an application";        
+        public const string AppCreateSucc = "You have successfully created an application";
         public const string AppValidSucc = "You have approved the application";
         public const string AppInvalidSucc = "You have rejected the application";
         public const string AppNewSucc = "You have marked an appication as New";
@@ -28,19 +28,19 @@
 
         public const string UserCreateSucc = "You have successfully created a new user";
         public const string UserWrongPass = "Wrong password";
-        public const string UserInvalidPass = "You have not entered valid password";
-        public const string UserExists = "This user already exists";
+        public const string UserInvalidPass = "You have entered an invalid password";
         public const string UserPassChangeSucc = "You have successfully changed your password";
         public const string UserSignOutSucc = "You have successfully signed out";
         public const string UserSignInSucc = "You have successfully logged in";
         public const string UserInvalLogin = "Invalid login attempt.";
 
+        public const string UserExists = @"User ""{0}"" already exists";
         public const string ErrorCatch = "Something went wrong";
         public const string NoBody = "No body";
 
 
 
-       
+
 
         public const string EmailDisplayName = "Email";
 
@@ -49,6 +49,8 @@
         public const string PageOpen = "Open";
         public const string PageEmail = "Email";
         public const string PageHome = "Home";
+        public const string PageUser = "User";
+        public const string PageRegister = "Register";
 
         public const string PageGetClosedEmails = "GetClosedEmails";
         public const string PageGetOpenEmails = "GetOpenEmails";

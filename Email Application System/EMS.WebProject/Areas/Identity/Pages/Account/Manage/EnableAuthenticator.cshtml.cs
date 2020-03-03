@@ -1,16 +1,13 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Linq;
-using System.Threading.Tasks;
-using EMS.Data.dbo_Models;
+﻿using EMS.Data.dbo_Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 
 namespace EMS.WebProject.Areas.Identity.Pages.Account.Manage
 {

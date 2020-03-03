@@ -26,7 +26,7 @@ namespace EMS.Services
         public async Task<List<EmailDto>> GetAllEmailsAsync()
         {
             var emailsDomain = await _context.Emails
-                .Include(email => email.Attachments)                
+                .Include(email => email.Attachments)
                 .ToListAsync()
                 .ConfigureAwait(false);
 
@@ -58,10 +58,11 @@ namespace EMS.Services
 
             return mail.GmailMessageId;
         }
-        public async Task<List<EmailDto>> GetNewEmailsAsync()
+
+        public async Task<List<EmailDto>> GetEmailsAsyns(EmailStatus status)
         {
             var emailsDomain = await _context.Emails
-                .Where(mail => mail.Status == EmailStatus.New)
+                .Where(mail => mail.Status == status)
                 .Include(mail => mail.Attachments)
                 .OrderByDescending(mail => mail.ToNewStatus)
                 .ToListAsync()
@@ -74,40 +75,9 @@ namespace EMS.Services
             }
 
             return emailsDto;
+
         }
-        public async Task<List<EmailDto>> GetOpenEmailsAsync()
-        {
-            var emailsDomain = await _context.Emails
-                .Where(mail => mail.Status == EmailStatus.Open)
-                .Include(mail => mail.Attachments)
-                .OrderByDescending(mail => mail.ToCurrentStatus)
-                .ToListAsync()
-                .ConfigureAwait(false);
 
-            var emailsDto = new List<EmailDto>();
-            foreach (var email in emailsDomain)
-            {
-                emailsDto.Add(email.MapToDtoModel());
-            }
-
-            return emailsDto;
-        }
-        public async Task<List<EmailDto>> GetClosedEmailsAsync()
-        {
-            var emailsDomain = await _context.Emails
-                .Where(mail => mail.Status == EmailStatus.Closed)
-                .Include(mail => mail.Attachments)
-                .ToListAsync()
-                .ConfigureAwait(false);
-
-            var emailsDto = new List<EmailDto>();
-            foreach (var email in emailsDomain)
-            {
-                emailsDto.Add(email.MapToDtoModel());
-            }
-
-            return emailsDto;
-        }
         public async Task ChangeStatusAsync(string id, EmailStatus newStatus)
         {
             var email = await _context.Emails
@@ -119,7 +89,7 @@ namespace EMS.Services
                 email.ToNewStatus = DateTime.UtcNow;
                 if (email.Status == EmailStatus.NotReviewed)
                 {
-                    await this.AddBodyAsync(email.Id);
+                    await AddBodyAsync(email.Id);
                 }
             }
             else if (newStatus == EmailStatus.Closed)
@@ -137,13 +107,10 @@ namespace EMS.Services
         }
         public async Task<string> GetBodyByDbAsync(string emailId)
         {
-            var email = await _context.Emails.FirstOrDefaultAsync(e => e.Id.ToString() == emailId);
+            var email = await _context.Emails
+                .FirstOrDefaultAsync(e => e.Id.ToString() == emailId);
 
-            if (email.Body is null)
-            {
-                return Constants.NoBody;
-            }
-            else return _gmailService.Decrypt(email.Body);
+            return (email.Body is null) ? Constants.NoBody : _gmailService.Decrypt(email.Body);
         }
         private async Task AddBodyAsync(Guid emailId)
         {
@@ -152,16 +119,14 @@ namespace EMS.Services
                 .ConfigureAwait(false);
 
             var encryptedBody = await _gmailService.GetEncryptedBodyAsync(email.GmailMessageId);
-
             if (encryptedBody is null)
             {
                 throw new ArgumentNullException("Error occured - email body is not foung");
             }
-            else
-            {
-                email.Body = encryptedBody;
-                await _context.SaveChangesAsync().ConfigureAwait(false);
-            }
+
+            email.Body = encryptedBody;
+            await _context.SaveChangesAsync().ConfigureAwait(false);
+
         }
     }
 }

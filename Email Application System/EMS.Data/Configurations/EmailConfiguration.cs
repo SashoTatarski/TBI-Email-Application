@@ -10,7 +10,7 @@ namespace EMS.Data.Configurations
         {
             builder
                 .HasKey(email => email.Id);
-                
+
             builder
                 .HasOne(email => email.Application)
                 .WithOne(app => app.Email);

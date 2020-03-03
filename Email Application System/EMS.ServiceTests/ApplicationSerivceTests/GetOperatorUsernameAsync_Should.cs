@@ -6,9 +6,6 @@ using EMS.Services.Tests;
 using GmailAPI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EMS.ServiceTests.ApplicationSerivceTests
@@ -50,9 +47,9 @@ namespace EMS.ServiceTests.ApplicationSerivceTests
             using (var assertContext = new SystemDataContext(TestUtils.GetOptions(nameof(GetOperatorUsername_Null))))
             {
                 var sut = new ApplicationService(assertContext, appFactoryMock.Object, userSericeMock.Object);
-                
+
                 var expectedUserName = await sut.GetOperatorUsernameAsync(null);
-                                
+
                 Assert.AreEqual(expectedUserName, null);
             }
         }

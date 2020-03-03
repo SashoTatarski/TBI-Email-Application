@@ -26,29 +26,27 @@ namespace EMS.Services
 
         public async Task ChangePasswordAsync(string username, string currentPassword, string newPassword)
         {
-            var user = await _userManager.FindByNameAsync(username);
-            var isPasswordCorrect = await _userManager.CheckPasswordAsync(user, currentPassword);
+            var user = await GetUser(username);
+            var passwordIsCorrect = await _userManager.CheckPasswordAsync(user, currentPassword);
 
-            if (!isPasswordCorrect)
+            if (!passwordIsCorrect)
             {
-                // To implement properly
-                throw new ArgumentException(Constants.UserWrongPass);
+                throw new ArgumentException(Constants.UserInvalidPass);
             }
             else
             {
                 var result = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
 
-                if (!result.Succeeded)
-                {
-                    // To implement properly
-                    throw new ArgumentException(Constants.UserInvalidPass);
-                }
-                else
+                if (result.Succeeded)
                 {
                     user.IsPasswordChanged = true;
                     var claim = _context.UserClaims.FirstOrDefault(userclaim => userclaim.ClaimType == "IsPasswordChanged" && userclaim.UserId == user.Id);
                     claim.ClaimValue = "True";
                     await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new ArgumentException(Constants.UserInvalidPass);
                 }
             }
         }
@@ -56,9 +54,8 @@ namespace EMS.Services
         public async Task CreateAsync(string username, string password, string role)
         {
             if (_context.Users.Any(user => user.UserName == username))
-            {
-                // To implement properly
-                throw new ArgumentException(Constants.UserExists);
+            {                
+                throw new ArgumentException(string.Format(Constants.UserExists, username));
             }
             else
             {
@@ -66,16 +63,18 @@ namespace EMS.Services
             }
         }
 
-        public async Task<UserDto> FindUserAsync(string username)
+        public async Task<UserDto> GetUserAsync(string username)
         {
-            var user = await _userManager.FindByNameAsync(username);
+            var user = await GetUser(username);
             return user.MapToDtoModel();
         }
 
         public async Task<string> GetUserIdAsync(string username)
         {
-            var user = await _userManager.FindByNameAsync(username);
+            var user = await GetUser(username);
             return user.Id;
         }
+
+        private async Task<UserDomain> GetUser(string username) => await _userManager.FindByNameAsync(username);
     }
 }

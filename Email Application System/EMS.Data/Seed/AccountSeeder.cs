@@ -82,7 +82,7 @@ namespace EMS.Data.Seed
                 {
                     await userManager.AddPasswordAsync(newOperator, Constants.DefaultPassword);
                     await userManager.AddToRoleAsync(newOperator, Constants.RoleOperator);
-                   
+
                     await userManager.AddClaimsAsync(newOperator, new List<Claim>()
                     {
                         new Claim("Role", Constants.RoleOperator),

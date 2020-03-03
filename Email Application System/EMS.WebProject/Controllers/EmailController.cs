@@ -72,7 +72,7 @@ namespace EMS.WebProject.Controllers
         {
             try
             {
-                var newEmails = await _emailService.GetNewEmailsAsync();
+                var newEmails = await _emailService.GetEmailsAsyns(EmailStatus.New);
 
                 ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
                 ViewData["SinceStatus"] = sortOrder == "SinceStatus_Date" ? "sinceStatus_desc" : "SinceStatus_Date";
@@ -114,7 +114,7 @@ namespace EMS.WebProject.Controllers
         {
             try
             {
-                var openEmails = await _emailService.GetOpenEmailsAsync();
+                var openEmails = await _emailService.GetEmailsAsyns(EmailStatus.Open);
 
                 ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
                 ViewData["SinceStatus"] = sortOrder == "SinceStatus_Date" ? "sinceStatus_date_desc" : "SinceStatus_Date";
@@ -165,7 +165,7 @@ namespace EMS.WebProject.Controllers
         {
             try
             {
-                var closedEmails = await _emailService.GetClosedEmailsAsync();
+                var closedEmails = await _emailService.GetEmailsAsyns(EmailStatus.Closed);
 
                 ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
                 switch (sortOrder)
@@ -190,7 +190,7 @@ namespace EMS.WebProject.Controllers
                 foreach (var email in vm.AllEmails)
                 {
                     email.OperatorUsername = await _appService.GetOperatorUsernameAsync(email.Id);
-                    email.ApplicationStatus = await _appService.GetAppStatus(email.Id);
+                    email.ApplicationStatus = await _appService.GetStatusAsync(email.Id);
                     email.ApplicationId = await _appService.GetAppIdByMailIdAsync(email.Id);
                 }
 
@@ -332,7 +332,7 @@ namespace EMS.WebProject.Controllers
                     body = await _emailService.GetBodyByGmailAsync(gmailId);
                 }
 
-               return Json(this.SanitizeContent(body));
+                return Json(this.SanitizeContent(body));
             }
             catch (Exception ex)
             {
@@ -344,11 +344,7 @@ namespace EMS.WebProject.Controllers
             var sanitizer = new HtmlSanitizer();
             var sanitizedContent = sanitizer.Sanitize(content);
 
-            if (sanitizedContent == "")
-            {
-                return Constants.BlockedContent;
-            }
-            else return sanitizedContent;
+            return (sanitizedContent == "") ? Constants.BlockedContent : sanitizedContent;
         }
 
         private IActionResult ErrorHandle(Exception ex)

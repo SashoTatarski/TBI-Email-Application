@@ -6,10 +6,6 @@ using EMS.Services.Tests;
 using GmailAPI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EMS.ServiceTests.ApplicationSerivceTests
@@ -31,7 +27,7 @@ namespace EMS.ServiceTests.ApplicationSerivceTests
                 var sut = new ApplicationService(assertContext, appFactoryMock.Object, userSericeMock.Object);
 
                 var appId = TestUtils.Applications[0].Id;
-                var emailId = await sut.GetEmailId(appId.ToString());
+                var emailId = await sut.GetEmailIdAsync(appId.ToString());
 
                 Assert.AreEqual(TestUtils.Applications[0].EmailId.ToString(), emailId);
             }

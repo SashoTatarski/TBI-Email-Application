@@ -7,10 +7,7 @@ using EMS.Services.Tests;
 using GmailAPI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EMS.ServiceTests.ApplicationSerivceTests
@@ -29,7 +26,7 @@ namespace EMS.ServiceTests.ApplicationSerivceTests
 
             using (var assertContext = new SystemDataContext(TestUtils.GetOptions(nameof(GetOpenApps))))
             {
-                var sut = new ApplicationService(assertContext,appFactoryMock.Object, userSericeMock.Object);
+                var sut = new ApplicationService(assertContext, appFactoryMock.Object, userSericeMock.Object);
 
                 var openApps = await sut.GetOpenAppsAsync();
 
@@ -56,7 +53,7 @@ namespace EMS.ServiceTests.ApplicationSerivceTests
                 var sut = new ApplicationService(assertContext, appFactoryMock.Object, userSericeMock.Object);
 
                 var openApps = await sut.GetOpenAppsAsync();
-                
+
                 Assert.IsTrue(openApps.Any(app => app.Id == TestUtils.Applications[0].Id));
             }
         }
@@ -76,7 +73,7 @@ namespace EMS.ServiceTests.ApplicationSerivceTests
 
                 var openApps = await sut.GetOpenAppsAsync();
 
-                
+
                 Assert.IsTrue(openApps.Any(app => app.EGN == TestUtils.Applications[0].EGN));
             }
         }

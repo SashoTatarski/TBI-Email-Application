@@ -8,13 +8,11 @@ namespace EMS.Services.Contracts
     public interface IEmailService
     {
         Task ChangeStatusAsync(string id, EmailStatus newStatus);
-        Task<List<EmailDto>> GetAllEmailsAsync();       
+        Task<List<EmailDto>> GetAllEmailsAsync();
         Task<string> GetGmailIdAsync(string id);
         Task<EmailDto> GetSingleEmailAsync(string mailId);
-        Task<string> GetBodyByGmailAsync(string messageId);    
-        Task<List<EmailDto>> GetOpenEmailsAsync();
-        Task<List<EmailDto>> GetNewEmailsAsync();
-        Task<List<EmailDto>> GetClosedEmailsAsync();
+        Task<string> GetBodyByGmailAsync(string messageId);
         Task<string> GetBodyByDbAsync(string emailId);
+        Task<List<EmailDto>> GetEmailsAsyns(EmailStatus status);
     }
 }

@@ -59,7 +59,7 @@ namespace EMS.WebProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegisterUser(RegisterUserViewModel vm)
+        public async Task<IActionResult> Register(RegisterUserViewModel vm)
         {
             try
             {
@@ -77,12 +77,12 @@ namespace EMS.WebProject.Controllers
             }
             catch (Exception ex)
             {
-                TempData["globalError"] = Constants.ErrorCatch;
+                TempData["globalError"] = ex.Message;
 
                 _logger.LogError(ex.Message);
             }
 
-            return RedirectToAction(Constants.PageIndex, Constants.PageEmail);
+            return RedirectToAction(Constants.PageRegister, Constants.PageUser);
         }
 
         [HttpGet]

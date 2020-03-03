@@ -35,7 +35,7 @@ namespace EMS.WebProject.Controllers
         {
             try
             {
-                var emailId = await _appService.GetEmailId(id);
+                var emailId = await _appService.GetEmailIdAsync(id);
 
                 await _appService.Delete(id);
                 _logger.LogInformation(string.Format(Constants.LogAppDelete, User.Identity.Name, id));
@@ -58,7 +58,7 @@ namespace EMS.WebProject.Controllers
         {
             try
             {
-                var application = await _appService.GetByMailIdAsync(id);
+                var application = await _appService.GetAppByMailIdAsync(id);
                 var email = await _emailService.GetSingleEmailAsync(id);
 
                 var app = application.MapToViewModelPreview();
@@ -97,7 +97,7 @@ namespace EMS.WebProject.Controllers
                 await _appService.ChangeStatusAsync(id, ApplicationStatus.Approved, User.Identity.Name);
                 _logger.LogInformation(string.Format(Constants.LogAppApproved, User.Identity.Name, id));
 
-                var emailId = await _appService.GetEmailId(id);
+                var emailId = await _appService.GetEmailIdAsync(id);
                 await _emailService.ChangeStatusAsync(emailId, EmailStatus.Closed);
                 _logger.LogInformation(string.Format(Constants.LogEmailClosed, User.Identity.Name, emailId));
 
@@ -119,7 +119,7 @@ namespace EMS.WebProject.Controllers
                 await _appService.ChangeStatusAsync(id, ApplicationStatus.Rejected, User.Identity.Name);
                 _logger.LogInformation(string.Format(Constants.LogAppReject, User.Identity.Name, id));
 
-                var emailId = await _appService.GetEmailId(id);
+                var emailId = await _appService.GetEmailIdAsync(id);
                 await _emailService.ChangeStatusAsync(emailId, EmailStatus.Closed);
                 _logger.LogInformation(string.Format(Constants.LogEmailClosed, User.Identity.Name, emailId));
 

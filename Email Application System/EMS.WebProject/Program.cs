@@ -18,12 +18,12 @@ namespace EMS.WebProject
 
             Log.Logger = new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)
-                .CreateLogger();           
-            
+                .CreateLogger();
+
             try
             {
                 Log.Information("Starting web host");
-                CreateWebHostBuilder(args).Build().Run();                
+                CreateWebHostBuilder(args).Build().Run();
             }
             catch (Exception ex)
             {
@@ -32,7 +32,7 @@ namespace EMS.WebProject
             finally
             {
                 Log.CloseAndFlush();
-            }            
+            }
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

@@ -7,10 +7,7 @@ using EMS.Services.Tests;
 using GmailAPI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EMS.ServiceTests.ApplicationSerivceTests
@@ -32,7 +29,7 @@ namespace EMS.ServiceTests.ApplicationSerivceTests
                 var sut = new ApplicationService(assertContext, appFactoryMock.Object, userSericeMock.Object);
 
                 var applicationId = TestUtils.Applications[0].Id;
-                await sut.ChangeStatusAsync(applicationId.ToString(), ApplicationStatus.Approved);
+                await sut.ChangeStatusAsync(applicationId.ToString(), ApplicationStatus.Approved, "userName");
 
                 var application = assertContext.Applications.FirstOrDefault(mail => mail.Id == applicationId);
 

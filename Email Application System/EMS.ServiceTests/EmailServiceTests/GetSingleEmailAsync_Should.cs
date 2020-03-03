@@ -4,10 +4,7 @@ using EMS.Services.Tests;
 using GmailAPI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EMS.ServiceTests.EmailServiceTests
@@ -17,7 +14,7 @@ namespace EMS.ServiceTests.EmailServiceTests
     {
         [TestMethod]
         public async Task GetEmail()
-        {            
+        {
             TestUtils.GetContextWithEmails(nameof(GetEmail));
 
             var gmailServiceMock = new Mock<IGmailAPIService>();
@@ -35,9 +32,9 @@ namespace EMS.ServiceTests.EmailServiceTests
 
         [TestMethod]
         public async Task GetAttachment()
-        {            
+        {
             TestUtils.GetContextWithEmails(nameof(GetAttachment));
-            
+
             var gmailServiceMock = new Mock<IGmailAPIService>();
 
             using (var assertContext = new SystemDataContext(TestUtils.GetOptions(nameof(GetAttachment))))

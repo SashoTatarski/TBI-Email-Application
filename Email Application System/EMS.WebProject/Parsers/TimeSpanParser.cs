@@ -1,10 +1,6 @@
 ﻿using EMS.Data;
-using EMS.Data.dbo_Models;
 using EMS.Services.dto_Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EMS.WebProject.Parsers
 {

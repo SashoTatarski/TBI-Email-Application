@@ -11,7 +11,7 @@ namespace EMS.Services.Security
     {
         private const string path = @"../EMS.Credentials/dataEncryptionKeys.json";
         private static string jsonText = File.ReadAllText(path);
-        private static Dictionary<string, string> keys = JsonConvert.DeserializeObject<Dictionary<string,string>>(jsonText);
+        private static Dictionary<string, string> keys = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonText);
 
         private static string initVector = keys["initVector"];
         private static int keysize = int.Parse(keys["keysize"]);

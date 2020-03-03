@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace EMS.GmailAPI.Mappers
 {
-    public static class MapperExtensions
+    internal static class MapperExtensions
     {
-        public static EmailDomain MapToDomainModel(this EmailGmail email)
+        internal static EmailDomain MapToDomainModel(this Email email)
         {
             return new EmailDomain
             {
@@ -24,7 +24,7 @@ namespace EMS.GmailAPI.Mappers
             };
         }
 
-        public static AttachmentDomain MapToDomainModel(this AttachmentGmail attachment)
+        internal static AttachmentDomain MapToDomainModel(this Attachment attachment)
         {
             return new AttachmentDomain
             {

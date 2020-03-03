@@ -1,5 +1,3 @@
-using System;
-
 namespace EMS.WebProject.Models
 {
     public class ErrorViewModel

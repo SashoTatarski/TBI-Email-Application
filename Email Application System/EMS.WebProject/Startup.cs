@@ -38,7 +38,7 @@ namespace EMS.WebProject
             });
 
             services.AddDbContext<SystemDataContext>(options =>
-                options.UseSqlServer(this.Configuration.GetConnectionString(Constants.AzureDBConnection)));
+                options.UseSqlServer(this.Configuration.GetConnectionString(Constants.LocalDBConnection)));
 
             services.AddIdentity<UserDomain, IdentityRole>(options =>
                  options.Stores.MaxLengthForKeys = 128)

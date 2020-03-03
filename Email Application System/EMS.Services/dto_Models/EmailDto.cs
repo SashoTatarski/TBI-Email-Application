@@ -20,7 +20,6 @@ namespace EMS.Services.dto_Models
         public int? NumberOfAttachments { get; set; }
         public double? SizeOfAttachmentsMb { get; set; }
         public ApplicationDto Application { get; set; }
-        public List<AttachmentDto> Attachments { get; set; }
-        public List<LogDto> Logs { get; set; }
+        public List<AttachmentDto> Attachments { get; set; }       
     }
 }

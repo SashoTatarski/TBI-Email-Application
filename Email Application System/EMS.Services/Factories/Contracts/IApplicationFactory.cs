@@ -1,5 +1,4 @@
 ﻿using EMS.Data.dbo_Models;
-using System;
 
 namespace EMS.Services.Factories.Contracts
 {
