@@ -16,6 +16,7 @@
 ### User authentication
 
        User authentication is performed by ASP.NET Identity authentication. Users cannot register in the application but are created by another user with “Manager” rights. There are two types of roles - Manager and Operator
+       // For initial login user the following credentials: manager@ems.com pass: Password-123 
 
 
 ### Loan Application format
