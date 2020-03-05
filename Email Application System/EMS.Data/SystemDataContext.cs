@@ -22,7 +22,6 @@ namespace EMS.Data
             builder.ApplyConfiguration(new EmailConfiguration());
             builder.ApplyConfiguration(new UserConfiguration());
 
-
             base.OnModelCreating(builder);
         }
     }
