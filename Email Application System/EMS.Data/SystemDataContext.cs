@@ -10,10 +10,10 @@ namespace EMS.Data
         public SystemDataContext(DbContextOptions<SystemDataContext> options) : base(options)
         { }
 
-        public DbSet<UserDomain> Users { get; set; }
-        public DbSet<ApplicationDomain> Applications { get; set; }
-        public DbSet<AttachmentDomain> Attachments { get; set; }
-        public DbSet<EmailDomain> Emails { get; set; }
+        public DbSet<UserDomain> Userss { get; set; }
+        public DbSet<ApplicationDomain> Applicationss { get; set; }
+        public DbSet<AttachmentDomain> Attachmentss { get; set; }
+        public DbSet<EmailDomain> Emailss { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
