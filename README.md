@@ -19,13 +19,14 @@
 
 ### Loan Application format
 
-       No specific email format was defined so far – mail can be in any encoding, HTML or pure text, with or without attachments. 
-       Each email may contain a single loan application.
+       No specific email format was defined so far – mail can be in any encoding, HTML or pure text, with or without
+       attachments. Each email may contain a single loan application.
 
 ### Email registration 
 
-       Emails are pulled on regular intervals (1 min) from Gmail API. Gmail inbox and system DB are always synchronized. 
-       As soon as email is read from Gmail API it is recorded in the system DB. All incoming emails are registered with unique ID automatically within the system. 
+       Emails are pulled on regular intervals (1 min) from Gmail API. Gmail inbox and system DB are always
+       synchronized. As soon as email is read from Gmail API it is recorded in the system DB. All incoming
+       emails are registered with unique ID automatically within the system. 
 
 
 ## Email/Application statuses
