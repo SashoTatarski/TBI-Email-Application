@@ -1,9 +1,5 @@
 # Email Application Manager
 
-## Team project of **SouthWest**
-
-### **Team Members:** Hristina Stanoeva and Aleksandar Tatarski
----
 ### Link to Trello Board:  [LINK](https://trello.com/b/JEfDjhk8/tbi-final-project)
 
 # The project
