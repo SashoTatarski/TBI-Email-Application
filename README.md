@@ -12,15 +12,15 @@
 
 ### Authentication
 
-       User authentication is performed by ASP.NET Identity authentication. Users cannot register in the application
-       but are created by another user with “Manager” rights. There are two types of roles - Manager and Operator
+       User authentication is performed by ASP.NET Identity authentication. Users cannot register in the
+       application but are created by another user with “Manager” rights. There are two types of roles - Manager and Operator
        // For initial login use the following credentials: manager@ems.com pass: Password-123 
 
 
 ### Loan Application Format
 
-       No specific email format was defined so far – mail can be in any encoding, HTML or pure text, with or without
-       attachments. Each email may contain a single loan application.
+       No specific email format was defined so far – mail can be in any encoding, HTML or pure text, with
+       or without attachments. Each email may contain a single loan application.
 
 ### Email Registration 
 
