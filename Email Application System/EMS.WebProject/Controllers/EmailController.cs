@@ -66,8 +66,8 @@ namespace EMS.WebProject.Controllers
                 return ErrorHandle(ex);
             }
         }
-
-        [HttpGet]
+                
+        [HttpGet("NewEmails")]
         public async Task<IActionResult> GetNewEmails(string sortOrder)
         {
             try
@@ -109,7 +109,7 @@ namespace EMS.WebProject.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("OpenEmails")]
         public async Task<IActionResult> GetOpenEmails(string sortOrder)
         {
             try
@@ -160,7 +160,7 @@ namespace EMS.WebProject.Controllers
 
         }
 
-        [HttpGet]
+        [HttpGet("ClosedEmails")]
         public async Task<IActionResult> GetClosedEmails(string sortOrder)
         {
             try
@@ -203,6 +203,7 @@ namespace EMS.WebProject.Controllers
 
         }
 
+        [HttpGet]
         public async Task<IActionResult> MarkInvalid(string id)
         {
             try
