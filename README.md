@@ -3,33 +3,33 @@
 ### Link to Trello Board:  [LINK](https://trello.com/b/JEfDjhk8/tbi-final-project)
 
 # The project
-       Deliver a system capable to facilitate tracking, monitoring and processing customer loan
-       applications coming to the bank via e-mail. 
+       Deliver a system capable to facilitate tracking, monitoring and processing customer loan applications
+       coming to the bank via e-mail. 
 
 
 ## Functionalities
 ---
 
-### User authentication
+### Authentication
 
        User authentication is performed by ASP.NET Identity authentication. Users cannot register in the application
        but are created by another user with “Manager” rights. There are two types of roles - Manager and Operator
        // For initial login use the following credentials: manager@ems.com pass: Password-123 
 
 
-### Loan Application format
+### Loan Application Format
 
        No specific email format was defined so far – mail can be in any encoding, HTML or pure text, with or without
        attachments. Each email may contain a single loan application.
 
-### Email registration 
+### Email Registration 
 
-       Emails are pulled on regular intervals (1 min) from Gmail API. Gmail inbox and system DB are always
-       synchronized. As soon as email is read from Gmail API it is recorded in the system DB. All incoming
+       Emails are fetched on regular intervals (1 min) from Gmail API. Gmail inbox and system database are
+       always synchronized. As soon as email is read from Gmail API it is recorded in the system DB. All incoming
        emails are registered with unique ID automatically within the system. 
 
 
-## Email/Application statuses
+## Email/Application Status
 ---
 
  - Not reviewed – default status – all new emails are classified as such. 
@@ -43,10 +43,10 @@ Respective formal system control of the provided data is applied – client-side
 
  - Closed - status of the email when the application is set approved or rejected
 
-## Statuses flow
+## Status Flow
 ---
 
-Possible statuses transition depends on granted user/operator rights. They should be as follow:
+Possible status transition depends on granted user/operator rights. They should be as follow:
 
 - Operators
   - Not reviewed **-->** Invalid Application
@@ -76,7 +76,7 @@ Possible statuses transition depends on granted user/operator rights. They shoul
            - Date/Time when the application was set in current status 
            - Date/Time when the application was set in terminal status (Closed or Invalid Application) 
 
-### Personal Data subject of GDPR
+### Personal Data Subject of GDPR
 
 The following fields contain customer private data therefore are kept encrypted within the DB:
  - Sender 
@@ -155,7 +155,7 @@ The following fields contain customer private data therefore are kept encrypted 
 ## Logging
  ### Serilog 
 All actions (status changes) are logged with information set 
- - TimeStamp – Date?
+ - TimeStamp – Date
  - Action performed (status change, etc.)
  - User performed the action
 
@@ -172,6 +172,3 @@ All actions (status changes) are logged with information set
 - Resistant to attacks like cross-site scripting, SQL injection, buffer overflow, session hijacking etc.
    - Input validation performed on server and client side
    - Error messages displayed to user, customer or third parties do not provide sensitive information on data or system
-
-
-
