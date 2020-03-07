@@ -3,8 +3,8 @@
 ### Link to Trello Board:  [LINK](https://trello.com/b/JEfDjhk8/tbi-final-project)
 
 # The project
-       The main aim is to deliver a system, capable to facilitate tracking, 
-       monitoring and processing customer loan applications coming to the bank via e-mail. 
+       The main aim is to deliver a system, capable to facilitate tracking, monitoring and processing 
+customer loan applications coming to the bank via e-mail. 
 
 
 ## Functionalities
