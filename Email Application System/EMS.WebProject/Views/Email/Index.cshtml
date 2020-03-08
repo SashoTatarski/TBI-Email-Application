@@ -1,5 +1,7 @@
 ﻿@model AllEmailsViewModel
-
+@{
+    ViewBag.Title = "Home Page";
+}
 
 <div class="row justify-content-between" style="margin: 0;">
     <ul class="nav nav-tabs">
@@ -135,6 +137,7 @@
 
             @if (Model.ActiveTab == Constants.TabAll)
             {
+                ViewBag.Title = "All Emails"; 
                 <th scope="col" style="width: 100px;">Status</th>
                 <th scope="col" style="width: 120px;"></th>
 
@@ -142,6 +145,7 @@
 
             @if (Model.ActiveTab == Constants.TabNew)
             {
+                ViewBag.Title = "New Emails";
                 <th scope="col" style="width: 100px;">
                     <div class="row">
                         <a style="color:white;" asp-action="GetNewEmails" asp-route-sortOrder="@ViewData["SinceStatus"]">
@@ -155,7 +159,8 @@
             }
 
             @if (Model.ActiveTab == Constants.TabOpen)
-            {
+            {                
+                ViewBag.Title = "Open Emails";
                 <th scope="col" style="width: 100px;">
                     <div class="row">
                         <a style="color:white;" asp-action="GetOpenEmails" asp-route-sortOrder="@ViewData["SinceStatus"]">
@@ -175,6 +180,7 @@
 
             @if (Model.ActiveTab == Constants.TabClosed)
             {
+                 ViewBag.Title = "Closed Emails";
                 <th scope="col">Status</th>
 
                 @if (User.IsInRole(Constants.Manager))
@@ -189,11 +195,11 @@
         @foreach (var email in Model.AllEmails)
         {
             if (Model.ActiveTab == Constants.TabAll)
-            {
+            {                 
                 <partial name="_AllEmailPartial" model="email" />
             }
             else if (Model.ActiveTab == Constants.TabNew)
-            {
+            {                
                 <partial name="_NewEmailPartial" model="email" />
             }
             else if (Model.ActiveTab == Constants.TabOpen)
@@ -201,7 +207,7 @@
                 <partial name="_OpenEmailPartial" model="email" />
             }
             else if (Model.ActiveTab == Constants.TabClosed)
-            {
+            {               
                 <partial name="_ClosedEmailPartial" model="email" />
             }
         }

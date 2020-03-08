@@ -1,4 +1,7 @@
 ﻿@model GenericEmailViewModel
+@{
+    ViewBag.Title = "All Emails";
+}
 
 @if (Model.Status == EmailStatus.Invalid.ToString())
 {
