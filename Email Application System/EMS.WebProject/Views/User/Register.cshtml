@@ -20,10 +20,14 @@
                     <div class="mt-5">
                         <div class="md-form input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text md-addon font-weight-bold text-center" id="inputGroupMaterial-sizing-default" style="width: 170px;
-                             border-top-left-radius: 10px;
-                             border-bottom-left-radius: 10px;
-                             background-color: #dee2e6;">Email</span>
+                                <label asp-for="@Model.Email">
+                                    <span class="input-group-text md-addon font-weight-bold text-center" id="inputGroupMaterial-sizing-default" style="width: 170px;
+                                           border-top-left-radius: 10px;
+                                           border-bottom-left-radius: 10px;
+                                           background-color: #dee2e6;">
+                                        Email
+                                    </span>
+                                </label>
                             </div>
                             <input asp-for="@Model.Email" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroupMaterial-sizing-default">
                             <span asp-validation-for="Email" class="text-danger">  </span>
@@ -31,10 +35,14 @@
 
                         <div class="md-form input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text md-addon font-weight-bold text-center" id="inputGroupMaterial-sizing-default" style="width: 170px;
-                             border-top-left-radius: 10px;
-                             border-bottom-left-radius: 10px;
-                            background-color: #dee2e6;">Password</span>
+                                <label asp-for="@Model.Password">
+                                    <span class="input-group-text md-addon font-weight-bold text-center" id="inputGroupMaterial-sizing-default" style="width: 170px;
+                                           border-top-left-radius: 10px;
+                                           border-bottom-left-radius: 10px;
+                                           background-color: #dee2e6;">
+                                        Password
+                                    </span>
+                                </label>
                             </div>
                             <input asp-for="@Model.Password type=" text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroupMaterial-sizing-default">
                             <span asp-validation-for="Password" class="text-danger">  </span>
@@ -42,10 +50,14 @@
 
                         <div class="md-form input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text md-addon font-weight-bold text-center" id="inputGroupMaterial-sizing-default" style="width: 170px;
-                             border-top-left-radius: 10px;
-                             border-bottom-left-radius: 10px;
-                             background-color: #dee2e6;">Confirm password</span>
+                                <label asp-for="@Model.ConfirmPassword">
+                                    <span class="input-group-text md-addon font-weight-bold text-center" id="inputGroupMaterial-sizing-default" style="width: 170px;
+                                           border-top-left-radius: 10px;
+                                           border-bottom-left-radius: 10px;
+                                           background-color: #dee2e6;">
+                                        Confirm password
+                                    </span>
+                                </label>
                             </div>
                             <input asp-for="@Model.ConfirmPassword type=" text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroupMaterial-sizing-default">
                             <span asp-validation-for="ConfirmPassword" class="text-danger">  </span>
@@ -54,10 +66,14 @@
 
                         <div class="md-form input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text md-addon font-weight-bold text-center" id="inputGroupMaterial-sizing-default" style="width: 170px;
+                                <label asp-for="@Model.Role">
+                                    <span class="input-group-text md-addon font-weight-bold text-center" id="inputGroupMaterial-sizing-default" style="width: 170px;
                              border-top-left-radius: 10px;
                              border-bottom-left-radius: 10px;
-                             background-color: #dee2e6;">Register as</span>
+                             background-color: #dee2e6;">
+                                        Register as
+                                    </span>
+                                </label>
                             </div>
                             <select asp-for="@Model.Role" asp-items="@Model.Roles" class="form-control"> </select>
                         </div>
