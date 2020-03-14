@@ -8,36 +8,34 @@ namespace EMS.WebProject.Parsers
     {
         public static string StatusParser(EmailDto email)
         {
-            var statusChangeMinutes = (DateTime.UtcNow - email.ToCurrentStatus).Value.Minutes;
-            var statusChangeHours = (DateTime.UtcNow - email.ToCurrentStatus).Value.Hours;
-            var statusChangeDays = (DateTime.UtcNow - email.ToCurrentStatus).Value.Days;
+            var statusChangeInMinutes = (DateTime.UtcNow - email.ToCurrentStatus).Value.Minutes;
+            var statusChangeInHours = (DateTime.UtcNow - email.ToCurrentStatus).Value.Hours;
+            var statusChangeInDays = (DateTime.UtcNow - email.ToCurrentStatus).Value.Days;
 
-            string currStatusTemp;
+            string currentStatus;
 
-            if (statusChangeDays <= 0)
+            if (statusChangeInDays <= 0)
             {
-                if (statusChangeHours <= 0)
-                {
-                    if (statusChangeMinutes <= 0)
-                    {
-                        currStatusTemp = Constants.TimeParser0Min;
-                    }
-                    else
-                    {
-                        currStatusTemp = statusChangeMinutes.ToString() + Constants.TimeParserMin;
-                    }
-                }
-                else
-                {
-                    currStatusTemp = statusChangeHours.ToString() + Constants.TimeParserHrsMin + statusChangeMinutes.ToString() + Constants.TimeParserMin;
-                }
+                currentStatus = CalculateHours(statusChangeInMinutes, statusChangeInHours);
             }
             else
             {
-                currStatusTemp = statusChangeDays.ToString() + Constants.TimeParserDays + statusChangeHours.ToString() + Constants.TimeParserHrsMin + " " + statusChangeMinutes.ToString() + Constants.TimeParserMin;
+                currentStatus = statusChangeInDays.ToString() + Constants.TimeParserDays + statusChangeInHours.ToString() + Constants.TimeParserHrsMin + " " + statusChangeInMinutes.ToString() + Constants.TimeParserMin;
             }
 
-            return currStatusTemp;
+            return currentStatus;
+        }
+
+        private static string CalculateHours(int statusChangeInMinutes, int statusChangeInHours)
+        {
+            if (statusChangeInHours <= 0)
+            {
+                return (statusChangeInMinutes <= 0) ? Constants.TimeParser0Min : statusChangeInMinutes.ToString() + Constants.TimeParserMin;
+            }
+            else
+            {
+                return statusChangeInHours.ToString() + Constants.TimeParserHrsMin + statusChangeInMinutes.ToString() + Constants.TimeParserMin;
+            }
         }
     }
 }
