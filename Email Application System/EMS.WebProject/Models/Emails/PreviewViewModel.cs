@@ -23,6 +23,6 @@ namespace EMS.WebProject.Models.Emails
 
         public List<AttachmentViewModel> Attachments { get; set; }
 
-        public AppPreviewViewModel Appliction { get; set; } = new AppPreviewViewModel();
+        public AppPreviewViewModel Application { get; set; } = new AppPreviewViewModel();
     }
 }

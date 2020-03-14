@@ -236,7 +236,7 @@ namespace EMS.WebProject.Controllers
 
                 var attachmentsViewModel = MapAttachments(email);
 
-                var vm = email.MapToViewModelPreview(this.SanitizeContent(body), attachmentsViewModel);
+                var vm = email.MapToViewModelPreview(SanitizeContent(body), attachmentsViewModel);
                 vm.InputViewModel.EmailId = id;
 
                 return View(Constants.PageOpen, vm);
@@ -247,7 +247,7 @@ namespace EMS.WebProject.Controllers
             }
         }
 
-        private static List<AttachmentViewModel> MapAttachments(EmailDto email)
+        internal static List<AttachmentViewModel> MapAttachments(EmailDto email)
         {
             var attachmentsVM = new List<AttachmentViewModel>();
             if (email.Attachments.Count != 0)
@@ -267,7 +267,7 @@ namespace EMS.WebProject.Controllers
             try
             {
                 var body = await _emailService.GetBodyByDbAsync(id);
-                var sanitizedBody = this.SanitizeContent(body);
+                var sanitizedBody = SanitizeContent(body);
 
                 var email = await _emailService.GetSingleEmailAsync(id);
 
@@ -297,22 +297,22 @@ namespace EMS.WebProject.Controllers
                     body = await _emailService.GetBodyByGmailAsync(gmailId);
                 }
 
-                return Json(this.SanitizeContent(body));
+                return Json(SanitizeContent(body));
             }
             catch (Exception ex)
             {
                 return ErrorHandle(ex);
             }
         }
-        private string SanitizeContent(string content)
+        internal static string SanitizeContent(string content)
         {
             var sanitizer = new HtmlSanitizer();
             var sanitizedContent = sanitizer.Sanitize(content);
 
-            return (sanitizedContent == "") ? Constants.BlockedContent : sanitizedContent;
+            return string.IsNullOrEmpty(sanitizedContent) ? Constants.BlockedContent : sanitizedContent;
         }
 
-        private IActionResult ErrorHandle(Exception ex)
+        internal IActionResult ErrorHandle(Exception ex)
         {
             _logger.LogError(ex.Message);
 

@@ -93,7 +93,7 @@
                                     Applicant
                                 </div>
                                 <div class="col-7" style="color: #525252">
-                                    @Model.Appliction.Name
+                                    @Model.Application.Name
                                 </div>
                             </div>
                             <hr style="color: #939393" />
@@ -102,7 +102,7 @@
                                     Personal ID/EGN
                                 </div>
                                 <div class="col-7" style="color: #525252;">
-                                    @Model.Appliction.EGN
+                                    @Model.Application.EGN
                                 </div>
                             </div>
                             <hr style="color: #939393" />
@@ -111,7 +111,7 @@
                                     Phone number
                                 </div>
                                 <div class="col-7" style="color: #525252;">
-                                    @Model.Appliction.Phone
+                                    @Model.Application.Phone
                                 </div>
                             </div>
                         </div>
@@ -121,7 +121,7 @@
                                     Operator:
                                 </div>
                                 <div class="col-7" style="color: #525252;">
-                                    <span class="font-weight-bolder">@Model.Appliction.OperatorName</span>
+                                    <span class="font-weight-bolder">@Model.Application.OperatorName</span>
                                 </div>
                             </div>
                             <div class="row mt-3">
@@ -129,27 +129,27 @@
                                     Status:
                                 </div>
                                 <div class="col-7">
-                                    @if (Model.Appliction.Status == ApplicationStatus.Approved)
+                                    @if (Model.Application.Status == ApplicationStatus.Approved)
                                     {
-                                        <span class="font-weight-bolder" style="color: #318845;">@Model.Appliction.Status</span>
+                                        <span class="font-weight-bolder" style="color: #318845;">@Model.Application.Status</span>
                                     }
-                                    @if (Model.Appliction.Status == ApplicationStatus.Rejected)
+                                    @if (Model.Application.Status == ApplicationStatus.Rejected)
                                     {
-                                        <span class="font-weight-bolder" style="color: #bb1323;">@Model.Appliction.Status</span>
+                                        <span class="font-weight-bolder" style="color: #bb1323;">@Model.Application.Status</span>
                                     }
-                                    @if (Model.Appliction.Status == ApplicationStatus.NotReviewed)
+                                    @if (Model.Application.Status == ApplicationStatus.NotReviewed)
                                     {
-                                        <span class="font-weight-bolder" style="color: #525252;">@Model.Appliction.Status</span>
+                                        <span class="font-weight-bolder" style="color: #525252;">@Model.Application.Status</span>
                                     }
                                 </div>
                             </div>
                         </div>
-                        @if ((Model.Appliction.OperatorName == User.Identity.Name || User.IsInRole(Constants.Manager)) && Model.Appliction.Status == ApplicationStatus.NotReviewed)
+                        @if ((Model.Application.OperatorName == User.Identity.Name || User.IsInRole(Constants.Manager)) && Model.Application.Status == ApplicationStatus.NotReviewed)
                         {
                             <div class="row mt-5">
                                 <div class="col-2"></div>
                                 <div class="col-4">
-                                    <a class="btn btn-dark" asp-controller="App" asp-action="Approve" asp-route-id="@Model.Appliction.Id"
+                                    <a class="btn btn-dark" asp-controller="App" asp-action="Approve" asp-route-id="@Model.Application.Id"
                                        style="width: 100%;
                                        height: 50px;
                                        font-size: 1rem;
@@ -163,7 +163,7 @@
                                     </a>
                                 </div>
                                 <div class="col-4">
-                                    <a class="btn btn-dark" 100%;" asp-controller="App" asp-action="Reject" asp-route-id="@Model.Appliction.Id"
+                                    <a class="btn btn-dark" 100%;" asp-controller="App" asp-action="Reject" asp-route-id="@Model.Application.Id"
                                        style="width: 100%;
                                       height: 50px;
                                       font-size: 1rem;
@@ -179,10 +179,10 @@
                                 <div class="col-2"></div>
                             </div>
                         }
-                        else if (Model.Appliction.Status != ApplicationStatus.NotReviewed && User.IsInRole(Constants.Manager))
+                        else if (Model.Application.Status != ApplicationStatus.NotReviewed && User.IsInRole(Constants.Manager))
                         {
                             <div class="row mt-5 justify-content-center">
-                                <a class="btn btn-dark" 100%;" asp-controller="App" asp-action="MarkAppNew" asp-route-id="@Model.Appliction.Id"
+                                <a class="btn btn-dark" 100%;" asp-controller="App" asp-action="MarkAppNew" asp-route-id="@Model.Application.Id"
                                    style="width: 50%;
                                        align-content: center;
                                       height: 45px;

@@ -7,7 +7,7 @@ namespace EMS.Services.Contracts
 {
     public interface IApplicationService
     {
-        Task ChangeStatusAsync(string applictionId, ApplicationStatus newStatus, string operatorUsername);
+        Task ChangeStatusAsync(string applicationId, ApplicationStatus newStatus, string operatorUsername);
         Task CreateAsync(string emailId, string userId, string EGN, string name, string phoneNum);
         Task<ApplicationDto> GetAppByMailIdAsync(string emailId);
         Task Delete(string appId);

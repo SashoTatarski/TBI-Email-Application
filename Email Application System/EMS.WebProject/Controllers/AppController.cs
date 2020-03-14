@@ -40,7 +40,7 @@ namespace EMS.WebProject.Controllers
                 await _appService.Delete(id);
                 _logger.LogInformation(string.Format(Constants.LogAppDelete, User.Identity.Name, id));
 
-                await _emailService.ChangeStatusAsync(emailId.ToString(), EmailStatus.New);
+                await _emailService.ChangeStatusAsync(emailId, EmailStatus.New);
                 _logger.LogInformation(string.Format(Constants.LogEmailNew, User.Identity.Name, emailId));
 
                 TempData[Constants.TempDataMsg] = Constants.AppNewSucc;
@@ -59,26 +59,16 @@ namespace EMS.WebProject.Controllers
             try
             {
                 var application = await _appService.GetAppByMailIdAsync(id);
-                var email = await _emailService.GetSingleEmailAsync(id);
-
                 var app = application.MapToViewModelPreview();
                 app.OperatorName = await _appService.GetOperatorUsernameAsync(id);
 
-                var attachmentsVM = new List<AttachmentViewModel>();
+                var email = await _emailService.GetSingleEmailAsync(id);
+                var attachmentViewModel = EmailController.MapAttachments(email);               
 
-                if (email.Attachments.Count != 0)
-                {
-                    foreach (var att in email.Attachments)
-                    {
-                        attachmentsVM.Add(att.MapToViewModel());
-                    }
-                }
+                var sanitizedBody = EmailController.SanitizeContent(email.Body);
 
-                var sanitizedBody = this.SanitizeContent(email.Body);
-
-                var vm = email.MapToViewModelPreview(sanitizedBody, attachmentsVM);
-
-                vm.Appliction = app;
+                var vm = email.MapToViewModelPreview(sanitizedBody, attachmentViewModel);
+                vm.Application = app;
 
                 return View(vm);
             }
@@ -94,16 +84,7 @@ namespace EMS.WebProject.Controllers
         {
             try
             {
-                await _appService.ChangeStatusAsync(id, ApplicationStatus.Approved, User.Identity.Name);
-                _logger.LogInformation(string.Format(Constants.LogAppApproved, User.Identity.Name, id));
-
-                var emailId = await _appService.GetEmailIdAsync(id);
-                await _emailService.ChangeStatusAsync(emailId, EmailStatus.Closed);
-                _logger.LogInformation(string.Format(Constants.LogEmailClosed, User.Identity.Name, emailId));
-
-                TempData[Constants.TempDataMsg] = Constants.AppValidSucc;
-
-                return RedirectToAction(Constants.PageGetClosedEmails, Constants.PageEmail);
+                return await DecideAnApplication(id, ApplicationStatus.Approved, Constants.LogAppApproved);
             }
             catch (Exception ex)
             {
@@ -111,21 +92,26 @@ namespace EMS.WebProject.Controllers
             }
         }
 
+        private async Task<IActionResult> DecideAnApplication(string id, ApplicationStatus status, string loggingInfo)
+        {
+            await _appService.ChangeStatusAsync(id, status, User.Identity.Name);
+            _logger.LogInformation(string.Format(loggingInfo, User.Identity.Name, id));
+
+            var emailId = await _appService.GetEmailIdAsync(id);
+            await _emailService.ChangeStatusAsync(emailId, EmailStatus.Closed);
+            _logger.LogInformation(string.Format(Constants.LogEmailClosed, User.Identity.Name, emailId));
+
+            TempData[Constants.TempDataMsg] = status == ApplicationStatus.Approved ? Constants.AppValidSucc : Constants.AppInvalidSucc;
+
+            return RedirectToAction(Constants.PageGetClosedEmails, Constants.PageEmail);
+        }
+
         [HttpGet]
         public async Task<IActionResult> Reject(string id)
         {
             try
             {
-                await _appService.ChangeStatusAsync(id, ApplicationStatus.Rejected, User.Identity.Name);
-                _logger.LogInformation(string.Format(Constants.LogAppReject, User.Identity.Name, id));
-
-                var emailId = await _appService.GetEmailIdAsync(id);
-                await _emailService.ChangeStatusAsync(emailId, EmailStatus.Closed);
-                _logger.LogInformation(string.Format(Constants.LogEmailClosed, User.Identity.Name, emailId));
-
-                TempData[Constants.TempDataMsg] = Constants.AppInvalidSucc;
-
-                return RedirectToAction(Constants.PageGetClosedEmails, Constants.PageEmail);
+                return await DecideAnApplication(id, ApplicationStatus.Rejected, Constants.LogAppReject);
             }
             catch (Exception ex)
             {
@@ -160,18 +146,6 @@ namespace EMS.WebProject.Controllers
             TempData["globalError"] = Constants.ErrorCatch;
 
             return View(Constants.PageIndex);
-        }
-
-        private string SanitizeContent(string content)
-        {
-            var sanitizer = new HtmlSanitizer();
-            var sanitizedContent = sanitizer.Sanitize(content);
-
-            if (sanitizedContent == "")
-            {
-                return Constants.BlockedContent;
-            }
-            else return sanitizedContent;
-        }
+        }       
     }
 }
