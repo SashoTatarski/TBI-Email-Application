@@ -21,7 +21,8 @@ namespace EMS.WebProject.Controllers
         private readonly ILogger<EmailController> _logger;
         private readonly UserManager<UserDomain> _userManager;
 
-        public UserController(IUserService userService, SignInManager<UserDomain> signInManager, ILogger<EmailController> logger, UserManager<UserDomain> userManager)
+        public UserController(IUserService userService, SignInManager<UserDomain> signInManager, 
+            ILogger<EmailController> logger, UserManager<UserDomain> userManager)
         {
             _userService = userService;
             _signInManager = signInManager;
@@ -49,9 +50,7 @@ namespace EMS.WebProject.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
-
-                TempData["globalError"] = Constants.ErrorCatch;
+                ErrorHandle(ex);
 
                 return View();
             }
@@ -77,18 +76,24 @@ namespace EMS.WebProject.Controllers
             }
             catch (Exception ex)
             {
-                TempData["globalError"] = ex.Message;
-
-                _logger.LogError(ex.Message);
+                ErrorHandle(ex);
             }
 
             return RedirectToAction(Constants.PageRegister, Constants.PageUser);
+        }
+
+        private void ErrorHandle(Exception ex)
+        {
+            TempData["globalError"] = Constants.ErrorCatch;
+
+            _logger.LogError(ex.Message);
         }
 
         [HttpGet]
         public IActionResult ChangePassword(string error = null)
         {
             TempData["error"] = error;
+
             return View();
         }
 
@@ -97,37 +102,44 @@ namespace EMS.WebProject.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+                if (!ModelState.IsValid)
+                {
+                    return RedirectToAction("ChangePassword", "User", new { error = Constants.InvalidData });
+                }
+                else
                 {
                     var user = await _userManager.FindByNameAsync(User.Identity.Name);
                     var isPasswordCorrect = await _userManager.CheckPasswordAsync(user, vm.CurrentPassword);
 
-                    if (isPasswordCorrect)
-                    {
-                        await _userService.ChangePasswordAsync(user.UserName, vm.CurrentPassword, vm.Password);
-                        _logger.LogInformation(string.Format(Constants.LogUserPassChange, User.Identity.Name));
-
-                        TempData[Constants.TempDataMsg] = Constants.UserPassChangeSucc;
-
-                        var userName = User.Identity.Name;
-                        await _signInManager.SignOutAsync();
-                        _logger.LogInformation(string.Format(Constants.LogUserSignOut, userName));
-                    }
-                    else
+                    if (!isPasswordCorrect)
                     {
                         return RedirectToAction("ChangePassword", "User", new { error = Constants.UnknownPass });
                     }
+                    else
+                    {
+                        await ChangeNewPassword(vm, user);
+                    }
                 }
-                else return RedirectToAction("ChangePassword", "User", new { error = Constants.InvalidData });
             }
             catch (Exception ex)
             {
-                TempData["globalError"] = Constants.ErrorCatch;
-
-                _logger.LogError(ex.Message);
+                ErrorHandle(ex);
             }
 
             return LocalRedirect(Constants.ChangePassRedirect);
+        }
+
+        private async Task ChangeNewPassword(ChangePasswordViewModel vm, UserDomain user)
+        {
+            await _userService.ChangePasswordAsync(user.UserName, vm.CurrentPassword, vm.Password);
+            _logger.LogInformation(string.Format(Constants.LogUserPassChange, User.Identity.Name));
+
+            TempData[Constants.TempDataMsg] = Constants.UserPassChangeSucc;
+
+            await _signInManager.SignOutAsync();
+
+            var userName = User.Identity.Name;
+            _logger.LogInformation(string.Format(Constants.LogUserSignOut, userName));
         }
     }
 }
