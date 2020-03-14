@@ -10,12 +10,12 @@ namespace EMS.WebProject.BackgroundServices
 {
     public class BackgroundService : IHostedService, IDisposable
     {
-        private readonly IServiceProvider serviceProvider;
+        private readonly IServiceProvider _serviceProvider;
         private Timer _timer;
 
-        public BackgroundService(ILogger<BackgroundService> logger, IServiceProvider serviceProvider)
+        public BackgroundService(IServiceProvider serviceProvider)
         {
-            this.serviceProvider = serviceProvider;
+            _serviceProvider = serviceProvider;
         }
 
         public Task StartAsync(CancellationToken stoppingToken)
@@ -28,7 +28,7 @@ namespace EMS.WebProject.BackgroundServices
 
         private async void SyncGmailAsync(object state)
         {
-            using (IServiceScope scope = serviceProvider.CreateScope())
+            using (var scope = _serviceProvider.CreateScope())
             {
                 var systemService = scope.ServiceProvider.GetRequiredService<IGmailAPIService>();
 

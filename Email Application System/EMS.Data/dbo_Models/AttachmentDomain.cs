@@ -12,9 +12,11 @@ namespace EMS.Data.dbo_Models
 
         [Required]
         public Guid EmailId { get; set; }
+
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
+
         [Required]
         public double SizeMb { get; set; }
 

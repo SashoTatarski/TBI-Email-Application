@@ -6,7 +6,7 @@
 @if (Model.Status == EmailStatus.Invalid.ToString())
 {
     <tr class="alert-light" style="color:darkgrey; background-color: #f4f4f4;">
-        <td><div class="id-column">@Model.Id</div></td>
+        <td><div class="id-column">@Model.Id.Substring(0,7)</div></td>
         <td>@Model.DateReceived</td>
         <td>@Model.SenderEmail</td>
         <td>@Model.SenderName</td>
@@ -44,7 +44,7 @@
 else
 {
     <tr>
-        <td><div class="id-column">@Model.Id</div></td>
+        <td><div class="id-column">@Model.Id.Substring(0,7)</div></td>
         <td>@Model.DateReceived</td>
         <td>@Model.SenderEmail</td>
         <td>@Model.SenderName</td>

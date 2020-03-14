@@ -65,7 +65,7 @@ namespace EMS.WebProject
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, SystemDataContext context, UserManager<UserDomain> userManager, RoleManager<IdentityRole> roleManager)
+        public static void Configure(IApplicationBuilder app, IHostingEnvironment env, SystemDataContext context, UserManager<UserDomain> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -87,7 +87,7 @@ namespace EMS.WebProject
             app.UseAuthentication();
 
             app.UseMvc(routes =>
-            {
+            {                
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Email}/{action=Index}/{id?}");                
