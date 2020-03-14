@@ -59,7 +59,7 @@ namespace EMS.Services
             return mail.GmailMessageId;
         }
 
-        public async Task<List<EmailDto>> GetEmailsAsyns(EmailStatus status)
+        public async Task<List<EmailDto>> GetEmailsAsync(EmailStatus status)
         {
             var emailsDomain = await _context.Emails
                 .Where(mail => mail.Status == status)

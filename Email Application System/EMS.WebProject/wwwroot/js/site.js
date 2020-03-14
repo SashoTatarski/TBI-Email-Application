@@ -10,7 +10,7 @@ $(document).ready(function () {
         </div>
 `);
 
-        $.get('/email/emailbody?id=' + id, function (data) {
+        $.get('/email/getemailbody?id=' + id, function (data) {
             $('#modal-body-' + id).html(data);
         });
     });

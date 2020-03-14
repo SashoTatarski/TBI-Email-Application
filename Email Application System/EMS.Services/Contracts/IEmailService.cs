@@ -13,6 +13,6 @@ namespace EMS.Services.Contracts
         Task<EmailDto> GetSingleEmailAsync(string mailId);
         Task<string> GetBodyByGmailAsync(string messageId);
         Task<string> GetBodyByDbAsync(string emailId);
-        Task<List<EmailDto>> GetEmailsAsyns(EmailStatus status);
+        Task<List<EmailDto>> GetEmailsAsync(EmailStatus status);
     }
 }

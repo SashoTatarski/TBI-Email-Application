@@ -37,27 +37,9 @@ namespace EMS.WebProject.Controllers
             try
             {
                 var allEmails = await _emailService.GetAllEmailsAsync();
+                allEmails = SortIndexAndClosedEmails(sortOrder, allEmails);
 
-                ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
-                switch (sortOrder)
-                {
-                    case "Date":
-                        allEmails = allEmails.OrderBy(mail => mail.Received).ToList();
-                        break;
-                    case "date_desc":
-                        allEmails = allEmails.OrderByDescending(mail => mail.Received).ToList();
-                        break;
-                    default:
-                        allEmails = allEmails.OrderByDescending(mail => mail.Received).ToList();
-                        break;
-                }
-
-
-                var vm = new AllEmailsViewModel
-                {
-                    AllEmails = allEmails.Select(x => x.MapToViewModel()).ToList(),
-                    ActiveTab = Constants.TabAll
-                };
+                var vm = CreateViewModel(allEmails, Constants.TabAll);
 
                 return View(Constants.PageIndex, vm);
             }
@@ -66,98 +48,32 @@ namespace EMS.WebProject.Controllers
                 return ErrorHandle(ex);
             }
         }
-                
-        [HttpGet("NewEmails")]
-        public async Task<IActionResult> GetNewEmails(string sortOrder)
+        private List<EmailDto> SortIndexAndClosedEmails(string sortOrder, List<EmailDto> emails)
         {
-            try
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            switch (sortOrder)
             {
-                var newEmails = await _emailService.GetEmailsAsyns(EmailStatus.New);
-
-                ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
-                ViewData["SinceStatus"] = sortOrder == "SinceStatus_Date" ? "sinceStatus_desc" : "SinceStatus_Date";
-                switch (sortOrder)
-                {
-                    case "Date":
-                        newEmails = newEmails.OrderBy(mail => mail.Received).ToList();
-                        break;
-                    case "date_desc":
-                        newEmails = newEmails.OrderByDescending(mail => mail.Received).ToList();
-                        break;
-                    case "SinceStatus_Date":
-                        newEmails = newEmails.OrderBy(mail => mail.ToCurrentStatus).ToList();
-                        break;
-                    case "sinceStatus_desc":
-                        newEmails = newEmails.OrderByDescending(mail => mail.ToCurrentStatus).ToList();
-                        break;
-                    default:
-                        newEmails = newEmails.OrderByDescending(mail => mail.Received).ToList();
-                        break;
-                }
-
-                var vm = new AllEmailsViewModel
-                {
-                    AllEmails = newEmails.Select(mail => mail.MapToViewModel()).ToList(),
-                    ActiveTab = Constants.TabNew
-                };
-
-                return View(Constants.PageIndex, vm);
+                case "Date":
+                    emails = emails.OrderBy(mail => mail.Received).ToList();
+                    break;
+                case "date_desc":
+                    emails = emails.OrderByDescending(mail => mail.Received).ToList();
+                    break;
+                default:
+                    emails = emails.OrderByDescending(mail => mail.Received).ToList();
+                    break;
             }
-            catch (Exception ex)
-            {
-                return ErrorHandle(ex);
-            }
+
+            return emails;
         }
 
-        [HttpGet("OpenEmails")]
-        public async Task<IActionResult> GetOpenEmails(string sortOrder)
+        private static AllEmailsViewModel CreateViewModel(List<EmailDto> emails, string activeTab)
         {
-            try
+            return new AllEmailsViewModel
             {
-                var openEmails = await _emailService.GetEmailsAsyns(EmailStatus.Open);
-
-                ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
-                ViewData["SinceStatus"] = sortOrder == "SinceStatus_Date" ? "sinceStatus_date_desc" : "SinceStatus_Date";
-                switch (sortOrder)
-                {
-                    case "Date":
-                        openEmails = openEmails.OrderBy(mail => mail.Received).ToList();
-                        break;
-                    case "date_desc":
-                        openEmails = openEmails.OrderByDescending(mail => mail.Received).ToList();
-                        break;
-                    case "SinceStatus_Date":
-                        openEmails = openEmails.OrderBy(mail => mail.ToCurrentStatus).ToList();
-                        break;
-                    case "sinceStatus_date_desc":
-                        openEmails = openEmails.OrderByDescending(mail => mail.ToCurrentStatus).ToList();
-                        break;
-                    default:
-                        openEmails = openEmails.OrderByDescending(mail => mail.Received).ToList();
-                        break;
-                }
-
-                var apps = await _appService.GetOpenAppsAsync();
-
-                var vm = new AllEmailsViewModel
-                {
-                    AllEmails = openEmails.Select(mail => mail.MapToViewModel()).ToList(),
-                    ActiveTab = Constants.TabOpen
-                };
-
-                foreach (var emailVM in vm.AllEmails)
-                {
-                    emailVM.OperatorUsername = await _appService.GetOperatorUsernameAsync(emailVM.Id);
-                    emailVM.ApplicationId = await _appService.GetAppIdByMailIdAsync(emailVM.Id);
-                }
-
-                return View(Constants.PageIndex, vm);
-            }
-            catch (Exception ex)
-            {
-                return ErrorHandle(ex);
-            }
-
+                AllEmails = emails.Select(x => x.MapToViewModel()).ToList(),
+                ActiveTab = activeTab
+            };
         }
 
         [HttpGet("ClosedEmails")]
@@ -165,28 +81,11 @@ namespace EMS.WebProject.Controllers
         {
             try
             {
-                var closedEmails = await _emailService.GetEmailsAsyns(EmailStatus.Closed);
+                var closedEmails = await _emailService.GetEmailsAsync(EmailStatus.Closed);
+                closedEmails = SortIndexAndClosedEmails(sortOrder, closedEmails);
 
-                ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
-                switch (sortOrder)
-                {
-                    case "Date":
-                        closedEmails = closedEmails.OrderBy(mail => mail.Received).ToList();
-                        break;
-                    case "date_desc":
-                        closedEmails = closedEmails.OrderByDescending(mail => mail.Received).ToList();
-                        break;
-                    default:
-                        closedEmails = closedEmails.OrderByDescending(mail => mail.Received).ToList();
-                        break;
-                }
-
-                var vm = new AllEmailsViewModel
-                {
-                    AllEmails = closedEmails.Select(mail => mail.MapToViewModel()).ToList(),
-                    ActiveTab = Constants.TabClosed
-                };
-
+                var vm = CreateViewModel(closedEmails, Constants.TabClosed);
+               
                 foreach (var email in vm.AllEmails)
                 {
                     email.OperatorUsername = await _appService.GetOperatorUsernameAsync(email.Id);
@@ -203,6 +102,77 @@ namespace EMS.WebProject.Controllers
 
         }
 
+        [HttpGet("NewEmails")]
+        public async Task<IActionResult> GetNewEmails(string sortOrder)
+        {
+            try
+            {
+                var newEmails = await _emailService.GetEmailsAsync(EmailStatus.New);
+                newEmails = SortNewAndOpenEmails(sortOrder, newEmails);
+
+                var vm = CreateViewModel(newEmails, Constants.TabNew);
+               
+                return View(Constants.PageIndex, vm);
+            }
+            catch (Exception ex)
+            {
+                return ErrorHandle(ex);
+            }
+        }
+
+        private List<EmailDto> SortNewAndOpenEmails(string sortOrder, List<EmailDto> newEmails)
+        {
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewData["SinceStatus"] = sortOrder == "SinceStatus_Date" ? "sinceStatus_desc" : "SinceStatus_Date";
+            switch (sortOrder)
+            {
+                case "Date":
+                    newEmails = newEmails.OrderBy(mail => mail.Received).ToList();
+                    break;
+                case "date_desc":
+                    newEmails = newEmails.OrderByDescending(mail => mail.Received).ToList();
+                    break;
+                case "SinceStatus_Date":
+                    newEmails = newEmails.OrderBy(mail => mail.ToCurrentStatus).ToList();
+                    break;
+                case "sinceStatus_desc":
+                    newEmails = newEmails.OrderByDescending(mail => mail.ToCurrentStatus).ToList();
+                    break;
+                default:
+                    newEmails = newEmails.OrderByDescending(mail => mail.Received).ToList();
+                    break;
+            }
+
+            return newEmails;
+        }
+
+        [HttpGet("OpenEmails")]
+        public async Task<IActionResult> GetOpenEmails(string sortOrder)
+        {
+            try
+            {
+                var openEmails = await _emailService.GetEmailsAsync(EmailStatus.Open);
+                openEmails = SortNewAndOpenEmails(sortOrder, openEmails);               
+
+                var apps = await _appService.GetOpenAppsAsync();
+
+                var vm = CreateViewModel(openEmails, Constants.TabOpen);               
+
+                foreach (var emailVM in vm.AllEmails)
+                {
+                    emailVM.OperatorUsername = await _appService.GetOperatorUsernameAsync(emailVM.Id);
+                    emailVM.ApplicationId = await _appService.GetAppIdByMailIdAsync(emailVM.Id);
+                }
+
+                return View(Constants.PageIndex, vm);
+            }
+            catch (Exception ex)
+            {
+                return ErrorHandle(ex);
+            }
+
+        }        
+
         [HttpGet]
         public async Task<IActionResult> MarkInvalid(string id)
         {
@@ -211,15 +181,13 @@ namespace EMS.WebProject.Controllers
                 await _emailService.ChangeStatusAsync(id, EmailStatus.Invalid);
 
                 _logger.LogInformation(string.Format(Constants.LogEmailInvalid, User.Identity.Name, id));
+
                 TempData[Constants.TempDataMsg] = Constants.EmailInvalidSucc;
 
                 var allEmails = new List<EmailDto>();
                 allEmails = await _emailService.GetAllEmailsAsync();
-                var vm = new AllEmailsViewModel
-                {
-                    AllEmails = allEmails.Select(x => x.MapToViewModel()).ToList(),
-                    ActiveTab = Constants.TabAll
-                };
+
+                var vm = CreateViewModel(allEmails, Constants.TabAll);
 
                 return View(Constants.PageIndex, vm);
             }
@@ -240,11 +208,8 @@ namespace EMS.WebProject.Controllers
                 TempData[Constants.TempDataMsg] = Constants.EmailNotReviewedSucc;
 
                 var allEmails = await _emailService.GetAllEmailsAsync();
-                var vm = new AllEmailsViewModel
-                {
-                    AllEmails = allEmails.Select(x => x.MapToViewModel()).ToList(),
-                    ActiveTab = Constants.TabAll
-                };
+
+                var vm = CreateViewModel(allEmails, Constants.TabAll);
 
                 return View(Constants.PageIndex, vm);
             }
@@ -262,24 +227,16 @@ namespace EMS.WebProject.Controllers
                 await _emailService.ChangeStatusAsync(id, EmailStatus.New);
 
                 _logger.LogInformation(string.Format(Constants.LogEmailNew, User.Identity.Name, id));
+
                 TempData[Constants.TempDataMsg] = Constants.EmailNewSucc;
 
                 var body = await _emailService.GetBodyByDbAsync(id);
 
                 var email = await _emailService.GetSingleEmailAsync(id);
 
-                var attachmentsVM = new List<AttachmentViewModel>();
+                var attachmentsViewModel = MapAttachments(email);
 
-                if (email.Attachments.Count != 0)
-                {
-                    foreach (var att in email.Attachments)
-                    {
-                        attachmentsVM.Add(att.MapToViewModel());
-                    }
-                }
-
-                var vm = email.MapToViewModelPreview(this.SanitizeContent(body), attachmentsVM);
-
+                var vm = email.MapToViewModelPreview(this.SanitizeContent(body), attachmentsViewModel);
                 vm.InputViewModel.EmailId = id;
 
                 return View(Constants.PageOpen, vm);
@@ -288,6 +245,20 @@ namespace EMS.WebProject.Controllers
             {
                 return ErrorHandle(ex);
             }
+        }
+
+        private static List<AttachmentViewModel> MapAttachments(EmailDto email)
+        {
+            var attachmentsVM = new List<AttachmentViewModel>();
+            if (email.Attachments.Count != 0)
+            {
+                foreach (var attachments in email.Attachments)
+                {
+                    attachmentsVM.Add(attachments.MapToViewModel());
+                }
+            }
+
+            return attachmentsVM;
         }
 
         [HttpGet]
@@ -300,17 +271,9 @@ namespace EMS.WebProject.Controllers
 
                 var email = await _emailService.GetSingleEmailAsync(id);
 
-                var attachmentsVM = new List<AttachmentViewModel>();
+                var attachmentsViewModel = MapAttachments(email);
 
-                if (email.Attachments.Count != 0)
-                {
-                    foreach (var att in email.Attachments)
-                    {
-                        attachmentsVM.Add(att.MapToViewModel());
-                    }
-                }
-
-                var vm = email.MapToViewModelPreview(sanitizedBody, attachmentsVM);
+                var vm = email.MapToViewModelPreview(sanitizedBody, attachmentsViewModel);
                 vm.InputViewModel.EmailId = id;
 
                 return View(Constants.PageOpen, vm);
@@ -322,7 +285,7 @@ namespace EMS.WebProject.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> EmailBody(string id)
+        public async Task<IActionResult> GetEmailBody(string id)
         {
             try
             {

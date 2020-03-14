@@ -25,7 +25,7 @@ namespace EMS.ServiceTests.EmailServiceTests
             {
                 var sut = new EmailService(assertContext, gmailServiceMock.Object);
 
-                var openEmails = await sut.GetEmailsAsyns(EmailStatus.Open);
+                var openEmails = await sut.GetEmailsAsync(EmailStatus.Open);
 
                 var expectedOpenEmailsCount = TestUtils.Emails.Where(mail => mail.Status == EmailStatus.Open).Count();
 
@@ -46,7 +46,7 @@ namespace EMS.ServiceTests.EmailServiceTests
             {
                 var sut = new EmailService(assertContext, gmailServiceMock.Object);
 
-                var openEmails = await sut.GetEmailsAsyns(EmailStatus.Open);
+                var openEmails = await sut.GetEmailsAsync(EmailStatus.Open);
 
                 int actualAttachmentsCount = 0;
                 openEmails.ForEach(email =>
