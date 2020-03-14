@@ -8,17 +8,16 @@ namespace EMS.WebProject.Controllers
 {
     public class HomeController : Controller
     {
-        public HomeController() { }
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            if (User.Identity.IsAuthenticated)
+            if (!User.Identity.IsAuthenticated)
             {
-                if (User.FindFirst("IsPasswordChanged").Value == "False")
-                    return RedirectToAction("ChangePassword", "User");
-                else
-                    return RedirectToAction("Index", "Email");
+                return LocalRedirect(Constants.ChangePassRedirect);
             }
-            else return LocalRedirect(Constants.ChangePassRedirect);
+            else
+            {
+                return (User.FindFirst("IsPasswordChanged").Value == "False") ? RedirectToAction("ChangePassword", "User") : RedirectToAction("Index", "Email");
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
