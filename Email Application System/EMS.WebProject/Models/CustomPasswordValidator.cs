@@ -11,11 +11,10 @@ namespace EMS.WebProject.Models
             {
                 string password = value.ToString();
 
-                if (Regex.IsMatch(password, @"^(?=.{1,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$")) return true;
-
-                else return false;
+                return Regex.IsMatch(password, @"^(?=.{1,}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W).*$");
             }
-            else return false;
+
+            return false;
         }
     }
 }
