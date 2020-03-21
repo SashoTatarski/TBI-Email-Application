@@ -28,6 +28,7 @@
     <PackageReference Include="HtmlSanitizer" Version="4.0.217" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.DependencyValidation.Analyzers" Version="0.10.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.4" />
     <PackageReference Include="Serilog" Version="2.9.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
